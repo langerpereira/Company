@@ -88,7 +88,7 @@
   <div class="container">
     <div class="form-box">
       <h2>Login</h2>
-        <form action="../include/login.php" method="POST">
+        <form id="loginForm">
         <div class="form-group">
             <label for="firstName">First Name</label>
             <input type="text" id="firstName" name="firstName"  />
@@ -103,4 +103,34 @@
     </div>
   </div>
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('#loginForm').on('submit', function(event) {
+      event.preventDefault(); 
+
+      var formData = $(this).serialize();
+
+      $.ajax({
+        type: 'POST',
+        url: '../include/login.php',
+        data: formData,
+        success: function(response) {
+          response = response.trim();
+          if (response === "success") {
+            alert("Login successful!");
+            console.log("Redirecting to index.php...");
+            window.location.href = 'index.php';
+          } else {
+            alert(response);
+          }
+        },
+        error: function(xhr, status, error) {
+          alert('Request failed: ' + error);
+        }
+      });
+    });
+  });
+</script>
+
 </html>
