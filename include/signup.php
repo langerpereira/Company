@@ -22,17 +22,22 @@ if($_SERVER["REQUEST_METHOD"] == 'POST'){
     $stmt->execute();
     $result = $stmt->get_result();
 
-    if($checkEmail->num_rows > 0){
-        $_SESSION['register_error'] = 'Email already existis';
-        $_SESSION['active_form'] = 'register';
-        header("Location: ../public/error.php");
+    if ($result->num_rows > 0) {
+        echo "Email already exists.";
         exit();
-    }else{
-        $conn->query("INSERT INTO users (first_name, last_name, email, password) VALUES( '$firstName', '$lastName', '$email', '$password' )");
     }
-
-    header("Location: ../public/login.php");
-    exit();
+    $hashedPassword = password_hash($rawPassword, PASSWORD_DEFAULT);
+    
+    $insertStmt = $conn->prepare("INSERT INTO users (first_name, last_name, email, password) VALUES (?, ?, ?, ?)");
+    $insertStmt->bind_param("ssss", $firstName, $lastName, $email, $hashedPassword);
+    
+    if ($insertStmt->execute()) {
+        echo "success";
+        header("Location: ../public/login.php");
+        exit();
+    } else {
+        echo "Signup failed. Try again.";
+    }
 }
 
 ?>
