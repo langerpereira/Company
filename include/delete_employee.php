@@ -19,11 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $conn->commit();
 
-        echo "✅ Employee and their documents deleted successfully.";
+        echo " Employee and their documents deleted successfully.";
     } catch (Exception $e) {
         $conn->rollback();
 
-        echo "❌ Error occurred: " . $e->getMessage();
+        echo " Error occurred: " . $e->getMessage();
     }
 
     $stmt1->close();
