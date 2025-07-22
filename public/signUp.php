@@ -106,4 +106,29 @@
     </div>
   </div>
 </body>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    $('#signUpForm').on('submit', function(event) {
+      event.preventDefault(); 
+
+      $.ajax({
+        url: '../include/signup.php',
+        type: 'POST',
+        data: $(this).serialize(),
+        success: function(response) {
+          if (response === 'success') {
+            alert('Sign Up successful! Redirecting to login page...');
+            window.location.href = '../public/login.php';
+          } else {
+            alert(response);
+          }
+        },
+        error: function() {
+          alert('An error occurred while processing your request.');
+        }
+      });
+    });
+  });
+</script>
 </html>
